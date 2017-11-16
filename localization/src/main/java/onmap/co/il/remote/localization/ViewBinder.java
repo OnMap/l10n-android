@@ -69,16 +69,17 @@ public class ViewBinder {
             Set<Map.Entry<String, TextView>> entries = viewPool.entrySet();
             for (Map.Entry<String, TextView> entry : entries) {
                 String key = entry.getKey();
-                List<LocalizedValue> localizedValues = dataMap.get(key);
-                if (localizedValues == null) {
-                    localizedValues = dataMap.get(key.replace("_", "."));
-                }
-                if (localizedValues != null) {
-                    String text = getLocalizedText(localizedValues);
-                    map.put(entry.getValue(), text);
+                if (key != null) {
+                    List<LocalizedValue> localizedValues = dataMap.get(key);
+                    if (localizedValues == null) {
+                        localizedValues = dataMap.get(key.replace("_", "."));
+                    }
+                    if (localizedValues != null) {
+                        String text = getLocalizedText(localizedValues);
+                        map.put(entry.getValue(), text);
+                    }
                 }
             }
-
             return map;
         };
     }
