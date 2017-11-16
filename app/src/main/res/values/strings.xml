@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RemoteLocalisation</string>
+    <string name="some_default_text_view">some default text view</string>
+    <string name="some_button">Some button</string>
 </resources>

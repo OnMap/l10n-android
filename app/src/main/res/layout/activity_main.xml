@@ -16,13 +16,13 @@
             android:id="@+id/text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="some default text view" />
+            android:text="@string/some_default_text_view" />
 
         <Button
             android:id="@+id/Test.Key.Second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector" />
+            android:text="@string/some_button" />
 
 
     </LinearLayout>
