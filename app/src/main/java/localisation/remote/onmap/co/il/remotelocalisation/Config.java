@@ -9,7 +9,7 @@ public class Config implements ConfigMap {
     @Override
     public SparseArray<String> getMap() {
         SparseArray<String> map = new SparseArray<>();
-        map.append(R.id.text_view, "Test.Key.First");
+        map.append(R.id.text_view, "Activity.Main.TextView");
         return map;
     }
 }

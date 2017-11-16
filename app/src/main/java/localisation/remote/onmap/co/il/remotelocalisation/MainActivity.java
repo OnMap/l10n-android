@@ -4,7 +4,6 @@ package localisation.remote.onmap.co.il.remotelocalisation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
@@ -19,15 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         baseApplication = ((BaseApplication) getApplication());
-        Button viewById = findViewById(R.id.Test_Key_Second);
-        viewById.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewById.setText(R.string.app_name);
-            }
-        });
-
-
+        Button viewById = findViewById(R.id.Activity_Main_Button);
         viewById
                 .setOnClickListener(v -> startActivity(new Intent(MainActivity.this, SecondActivity.class)));
 

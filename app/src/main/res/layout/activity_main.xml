@@ -19,7 +19,7 @@
             android:text="@string/some_default_text_view" />
 
         <Button
-            android:id="@+id/Test.Key.Second"
+            android:id="@+id/Activity.Main.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/some_button" />
