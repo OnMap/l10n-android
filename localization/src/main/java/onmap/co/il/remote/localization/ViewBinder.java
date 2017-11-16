@@ -32,9 +32,11 @@ public class ViewBinder {
     private final SparseArray<String> viewIdKey;
     private Map<String, TextView> viewPool = new HashMap<>();
 
-    public ViewBinder(Context context, Class aClass, ConfigMap config) {
+    public ViewBinder(Context context, Class aClass, @Nullable ConfigMap config) {
         viewIdKey = getViewIdKey(context, aClass);
-        update(config);
+        if (config != null) {
+            update(config);
+        }
     }
 
     private void update(ConfigMap config) {
