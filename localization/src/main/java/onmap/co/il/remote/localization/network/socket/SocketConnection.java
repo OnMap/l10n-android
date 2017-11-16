@@ -29,6 +29,7 @@ public class SocketConnection {
                 log(object.toString());
                 if (object instanceof JSONObject) {
                     JSONObject json = (JSONObject) object;
+                    log(json.toString());
                     LocalizationModel localizationModel = LocalizationModel.fromJson(json.toString());
                     storage.update(localizationModel);
                 }

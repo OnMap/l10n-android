@@ -2,4 +2,6 @@
     <string name="app_name">RemoteLocalisation</string>
     <string name="some_default_text_view">some default text view</string>
     <string name="some_button">Some button</string>
+    <string name="default_second_button_text">default second button text</string>
+    <string name="some_default_text_for_second">some default text for second</string>
 </resources>

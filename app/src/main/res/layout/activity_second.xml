@@ -16,13 +16,13 @@
             android:id="@+id/Activity.Second.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="some default text view" />
+            android:text="@string/some_default_text_for_second" />
 
         <Button
             android:id="@+id/Activity.Second.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="some default button " />
+            android:text="@string/default_second_button_text" />
 
 
     </LinearLayout>

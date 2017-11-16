@@ -9,10 +9,25 @@ import android.support.annotation.Nullable;
  */
 
 public class SecondActivity extends Activity {
+
+    private BaseApplication baseApplication;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        baseApplication = ((BaseApplication) getApplication());
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        baseApplication.bindRemoteLocalization(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        baseApplication.unbindRemoteLocalization(this);
     }
 }

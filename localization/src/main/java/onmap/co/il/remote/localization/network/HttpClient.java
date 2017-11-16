@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 
 import io.reactivex.Observable;
+import onmap.co.il.remote.localization.Logger;
 import onmap.co.il.remote.localization.Result;
 import onmap.co.il.remote.localization.models.LocalizationModel;
 
@@ -59,6 +60,7 @@ public class HttpClient {
 
     private LocalizationModel getResponse(String appId, ApiConnection apiConnection) throws IOException {
         String body = apiConnection.get(host + "translations?app_id=" + appId);
+        Logger.log(body);
         return LocalizationModel.fromJson(body);
     }
 

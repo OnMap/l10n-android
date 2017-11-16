@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.subjects.PublishSubject;
 import onmap.co.il.remote.localization.models.LocalizedValue;
 import onmap.co.il.remote.localization.storage.LocaleStorage;
 import onmap.co.il.remote.localization.storage.RealmLocaleStorage;
@@ -28,28 +28,13 @@ import onmap.co.il.remote.localization.storage.RealmLocaleStorage;
 public class ViewBinder {
 
     public static final String TAG = ViewBinder.class.getSimpleName();
-    private final PublishSubject<Map<String, TextView>> onViewPoolCreated = PublishSubject.create();
+
     private final SparseArray<String> viewIdKey;
     private Map<String, TextView> viewPool = new HashMap<>();
 
     public ViewBinder(Context context, Class aClass, ConfigMap config) {
-        viewIdKey = getViewIdKey(context, aClass);//Todo move from constructor
+        viewIdKey = getViewIdKey(context, aClass);
         update(config);
-
-        LocaleStorage storage = RealmLocaleStorage.getInstance();
-
-        storage.get()
-                .withLatestFrom(onViewPoolCreated, convert())
-                .map(Map::entrySet)
-                .flatMap(Observable::fromIterable)
-                .subscribe(this::setText);
-
-        storage.onLocalizationChanged()
-                .withLatestFrom(onViewPoolCreated, convert())
-                .map(Map::entrySet)
-                .flatMap(Observable::fromIterable)
-                .subscribe(this::setText);
-
     }
 
     private void update(ConfigMap config) {
@@ -71,7 +56,6 @@ public class ViewBinder {
                 textView.setText(value);
             }
         });
-
     }
 
     @NonNull
@@ -133,13 +117,30 @@ public class ViewBinder {
     }
 
     public void bind(Activity activity) {
+        Logger.log("bind " + activity);
         viewPool = new HashMap<>();
         View root = getRootView(activity);
         addToViewPool(root);
-        onViewPoolCreated.onNext(viewPool);
+
+        LocaleStorage storage = RealmLocaleStorage.getInstance();
+
+        Observable<Map<String, TextView>> viewPoolObs = Observable.just(viewPool);
+
+        updateViews(viewPoolObs, storage.get());
+        updateViews(viewPoolObs, storage.onLocalizationChanged());
+
+    }
+
+    private Disposable updateViews(Observable<Map<String, TextView>> viewPoolObs, Observable<Map<String, List<LocalizedValue>>> source) {
+        return source
+                .withLatestFrom(viewPoolObs, convert())
+                .map(Map::entrySet)
+                .flatMap(Observable::fromIterable)
+                .subscribe(this::setText);
     }
 
     public void unbind(Activity activity) {
+        Logger.log("unbind " + activity);
         viewPool.clear();
     }
 
