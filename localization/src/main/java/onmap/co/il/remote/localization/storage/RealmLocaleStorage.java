@@ -73,7 +73,9 @@ public class RealmLocaleStorage implements LocaleStorage {
     @Override
     public void init(Context context) {
         Realm.init(context);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .modules(new LibraryModule())
+                .build();
         Realm.deleteRealm(config);
         Realm.setDefaultConfiguration(config);
     }
