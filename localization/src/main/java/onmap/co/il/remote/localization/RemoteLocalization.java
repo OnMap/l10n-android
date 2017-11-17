@@ -2,6 +2,7 @@ package onmap.co.il.remote.localization;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Window;
 
 import java.net.URISyntaxException;
 
@@ -61,8 +62,12 @@ public class RemoteLocalization {
         binder.bind(activity);
     }
 
-    public void unbind(Activity activity) {
-        binder.unbind(activity);
+    public void bind(Window window) {
+        binder.bind(window);
+    }
+
+    public void unbind() {
+        binder.unbind();
     }
 
     public static class Builder {

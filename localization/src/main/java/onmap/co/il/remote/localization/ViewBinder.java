@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -54,7 +56,7 @@ public class ViewBinder {
         new Handler(Looper.getMainLooper()).post(() -> {
             TextView textView = entry.getKey();
             String value = entry.getValue();
-            if (value != null) {
+            if (value != null && !value.isEmpty()) {
                 textView.setText(value);
             }
         });
@@ -121,8 +123,15 @@ public class ViewBinder {
 
     public void bind(Activity activity) {
         Logger.log("bind " + activity);
+        Window window = activity.getWindow();
+
+        bind(window);
+
+    }
+
+    public void bind(Window window) {
         viewPool = new HashMap<>();
-        View root = getRootView(activity);
+        View root = getRootView(window);
         addToViewPool(root);
 
         LocaleStorage storage = RealmLocaleStorage.getInstance();
@@ -131,7 +140,6 @@ public class ViewBinder {
 
         updateViews(viewPoolObs, storage.get());
         updateViews(viewPoolObs, storage.onLocalizationChanged());
-
     }
 
     private Disposable updateViews(Observable<Map<String, TextView>> viewPoolObs, Observable<Map<String, List<LocalizedValue>>> source) {
@@ -142,22 +150,25 @@ public class ViewBinder {
                 .subscribe(this::setText);
     }
 
-    public void unbind(Activity activity) {
-        Logger.log("unbind " + activity);
+    public void unbind() {
         viewPool.clear();
     }
 
-    private View getRootView(Activity activity) {
-        return activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    private View getRootView(Window window) {
+        return window.getDecorView().findViewById(android.R.id.content);
     }
 
     private void addToViewPool(View root) {
 
         if (root instanceof ViewGroup) {
+            Logger.log(root.toString());
             ViewGroup rootViewGroup = (ViewGroup) root;
             int childCount = rootViewGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View childAt = rootViewGroup.getChildAt(i);
+                if (rootViewGroup instanceof ViewPager) {
+                    Logger.log(childAt.toString());
+                }
                 viewPool(childAt, viewPool);
                 addToViewPool(childAt);
             }

@@ -24,7 +24,7 @@ public class BaseApplication extends Application {
         remoteLocalization.bind(activity);
     }
 
-    public void unbindRemoteLocalization(Activity activity) {
-        remoteLocalization.unbind(activity);
+    public void unbindRemoteLocalization() {
+        remoteLocalization.unbind();
     }
 }
