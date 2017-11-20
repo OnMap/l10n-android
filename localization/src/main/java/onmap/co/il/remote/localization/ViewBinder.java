@@ -11,6 +11,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -57,7 +58,12 @@ public class ViewBinder {
             TextView textView = entry.getKey();
             String value = entry.getValue();
             if (value != null && !value.isEmpty()) {
-                textView.setText(value);
+                if (textView instanceof EditText) {
+                    textView.setHint(value);
+                } else {
+                    textView.setText(value);
+                }
+
             }
         });
     }
