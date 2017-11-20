@@ -22,12 +22,14 @@ public class RemoteLocalization {
     private String socketUri;
     private ConfigMap config;
     private ViewBinder binder;
+    private boolean deleteIfMigration = false;
 
 
     private void setup(Context context, Class aClass) {
         if (appId == null || host == null) {
             throw new IllegalArgumentException("Please set your APP_ID and host url");
         }
+
         setupStorage(context);
         updateLocalizations(appId, host);
         openRealTimeConnection();
@@ -36,8 +38,8 @@ public class RemoteLocalization {
 
 
     private void setupStorage(Context context) {
-        LocaleStorage storage = RealmLocaleStorage.getInstance();
-        storage.init(context);
+        RealmLocaleStorage.getInstance().setDeleteIfMigration(deleteIfMigration);
+        RealmLocaleStorage.getInstance().init(context);
 
     }
 
@@ -95,6 +97,11 @@ public class RemoteLocalization {
 
         public Builder setConfigMap(ConfigMap config) {
             remoteLocalization.config = config;
+            return this;
+        }
+
+        public Builder setDeleteIfMigration(boolean deleteIfMigration) {
+            remoteLocalization.deleteIfMigration = deleteIfMigration;
             return this;
         }
 

@@ -24,6 +24,7 @@ public class RealmLocaleStorage implements LocaleStorage {
 
 
     private final PublishSubject<Map<String, List<LocalizedValue>>> onLocalizationChanged = PublishSubject.create();
+    private boolean deleteIfMigration;
 
     private RealmLocaleStorage() {
         super();
@@ -73,9 +74,15 @@ public class RealmLocaleStorage implements LocaleStorage {
     @Override
     public void init(Context context) {
         Realm.init(context);
-        RealmConfiguration config = new RealmConfiguration.Builder()
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                 .name("localization.realm")
-                .modules(new LibraryModule())
+                .modules(new LibraryModule());
+
+        if (deleteIfMigration) {
+            builder.deleteRealmIfMigrationNeeded();
+        }
+
+        RealmConfiguration config = builder
                 .build();
         Realm.deleteRealm(config);
         Realm.setDefaultConfiguration(config);
@@ -117,5 +124,9 @@ public class RealmLocaleStorage implements LocaleStorage {
     @Override
     public Observable<Map<String, List<LocalizedValue>>> onLocalizationChanged() {
         return onLocalizationChanged;
+    }
+
+    public void setDeleteIfMigration(boolean deleteIfMigration) {
+        this.deleteIfMigration = deleteIfMigration;
     }
 }
