@@ -80,7 +80,8 @@ public class ViewBinder {
                 if (key != null) {
                     List<LocalizedValue> localizedValues = dataMap.get(key);
                     if (localizedValues == null) {
-                        localizedValues = dataMap.get(key.replace("_", "."));
+                        key = key.replace("_", ".");
+                        localizedValues = dataMap.get(key);
                     }
                     if (localizedValues != null) {
                         String text = getLocalizedText(localizedValues);
@@ -95,6 +96,9 @@ public class ViewBinder {
     @Nullable
     private String getLocalizedText(List<LocalizedValue> localizedValues) {
         String locale = Locale.getDefault().getLanguage();
+        if (locale.equals("iw")) {
+            locale = "he";
+        }
         for (int i = 0; i < localizedValues.size(); i++) {
             LocalizedValue value = localizedValues.get(i);
             if (value.getLanguage().equals(locale)) {
