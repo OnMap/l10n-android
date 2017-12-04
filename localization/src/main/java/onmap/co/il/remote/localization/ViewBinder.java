@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,11 +131,8 @@ public class ViewBinder {
     }
 
     public void bind(Activity activity) {
-        Logger.log("bind " + activity);
         Window window = activity.getWindow();
-
         bind(window);
-
     }
 
     public void bind(Window window) {
@@ -171,14 +167,10 @@ public class ViewBinder {
     private void addToViewPool(View root) {
 
         if (root instanceof ViewGroup) {
-            Logger.log(root.toString());
             ViewGroup rootViewGroup = (ViewGroup) root;
             int childCount = rootViewGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View childAt = rootViewGroup.getChildAt(i);
-                if (rootViewGroup instanceof ViewPager) {
-                    Logger.log(childAt.toString());
-                }
                 viewPool(childAt, viewPool);
                 addToViewPool(childAt);
             }
